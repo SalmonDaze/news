@@ -16,12 +16,15 @@ export default new Vuex.Store({
       state._id = payload._id
       sessionStorage.setItem('username',payload.username)
       sessionStorage.setItem('token',payload.token)
+      sessionStorage.setItem('_id',payload._id)
     },
     logout(state){
       state.username = ''
       state.token = ''
+      state._id = ''
       sessionStorage.removeItem('username')
       sessionStorage.removeItem('token')
+      sessionStorage.removeItem('_id')
     }
   },
   actions: {

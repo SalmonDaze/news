@@ -26,7 +26,8 @@ let router = new Router({
 if(sessionStorage.getItem('username')){
   store.commit('add_login_user',{
     username:sessionStorage.getItem('username'),
-    token:sessionStorage.getItem('token')
+    token:sessionStorage.getItem('token'),
+    _id:sessionStorage.getItem('_id')
   })
 }
 

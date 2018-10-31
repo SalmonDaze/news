@@ -9,7 +9,7 @@
         <input type="button" value='提交' @click='postArticle'>
         <br/>
         <button @click='getData'>获得用户数据</button>
-        <ul v-show='userList'>
+        <ul v-if='showList'>
             <li v-for='user in userList' :key='user._id'>
                 <div>用户名 : {{user.username}}</div>
                 <div v-for='arti in user.posts' :key='arti._id'>
@@ -30,6 +30,7 @@ export default{
             userList:[],
             title:'',
             content:'',
+            showList:false,
         }
     },
     created(){
@@ -77,6 +78,7 @@ export default{
                 },
             }).then((res)=>{
                 this.userList = res.data.doc
+                this.showList = !this.showList
             })
         }
     }
