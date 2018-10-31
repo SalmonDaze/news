@@ -23,8 +23,18 @@ axios.interceptors.request.use(config => {
   // http response 拦截器
   axios.interceptors.response.use(
   response => {
-   
   return response;
+  },error =>{
+    if(error.response){
+      switch(error.response.status){
+        case 401:
+          store.commit('logout')
+          router.replace({
+            path:'/'
+          })
+      }
+    }
+    return Promise.reject(error.response)
   })
 
 Vue.prototype.$http = axios

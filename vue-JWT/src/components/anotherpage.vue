@@ -23,12 +23,7 @@ export default{
             'Content-Type' : 'application/x-www-form-urlencoded'
             },
         }).then(res=>{
-            if(res.data.false){
-                this.logout()
-                this.$router.push({path:'/'})
-            }else{
                 this.userList = res.data.data
-            }
         })
     },
     methods:{

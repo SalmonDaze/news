@@ -64,7 +64,7 @@ router.use(function(req, res, next) {
         // 解码 token (验证 secret 和检查有效期（exp）)
         jwt.verify(token, app.get('secret'), function(err, decoded) {      
               if (err) {
-            return res.json({ false: true, message: '无效的token.' });    
+            return res.status(401).json({false:true,message:'token失效'});    
               } else {
                 // 如果验证通过，在req中写入解密结果
                 req.decoded = decoded;  
