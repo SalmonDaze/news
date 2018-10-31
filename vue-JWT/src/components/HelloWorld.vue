@@ -56,7 +56,7 @@ export default {
       let username = this.account
       let password = this.password
       this.$http({
-        url:'http://localhost:3000/api/login',
+        url:'http://localhost:3000/login',
         method:'POST',
         headers:{
           'Content-Type' : 'application/x-www-form-urlencoded'

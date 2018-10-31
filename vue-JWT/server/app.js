@@ -43,19 +43,51 @@ app.post('/register',function(req,res){
     })
 }) 
 
-router.post('/login',(req,res)=>{
+app.post('/login',(req,res)=>{
     let userInfo = (JSON.parse(Object.keys(req.body)[0]))
     User.findOne({username:userInfo.username,password:userInfo.password}).then((doc)=>{
         if(!doc) res.json({message:'账户或密码错误'})
         else{
             let token = jwt.sign(userInfo, app.get('secret'), {
-                expiresIn : 5// 授权时效24小时
+                expiresIn : 10// 授权时效24小时
           });
             res.json({message:'欢迎使用API',token:token,user:doc})
         }
     })
     
 })
+
+router.use(function(req, res, next) {
+    // 拿取token 数据 按照自己传递方式写
+    var token = req.header('Authentication-token');
+    if (token) {      
+        // 解码 token (验证 secret 和检查有效期（exp）)
+        jwt.verify(token, app.get('secret'), function(err, decoded) {      
+              if (err) {
+            return res.json({ false: true, message: '无效的token.' });    
+              } else {
+                // 如果验证通过，在req中写入解密结果
+                req.decoded = decoded;  
+                //console.log(decoded)  ;
+                next(); //继续下一步路由
+          }
+        });
+      } else {
+        // 没有拿到token 返回错误 
+        return res.json({code:1,message:'未找到'})
+      }
+});
+
+router.get('/getUser',function(req,res,next){
+    User.find({}).then((doc)=>{
+        res.json({
+            message:'查找成功',
+            data:doc
+        })
+    })
+})
+
+
 
 app.use('/api',router)
 

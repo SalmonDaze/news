@@ -15,6 +15,12 @@ export default new Vuex.Store({
       sessionStorage.setItem('username',payload.username)
       sessionStorage.setItem('token',payload.token)
     },
+    logout(state){
+      state.username = ''
+      state.token = ''
+      sessionStorage.removeItem('username')
+      sessionStorage.removeItem('token')
+    }
   },
   actions: {
 
