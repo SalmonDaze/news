@@ -7,11 +7,13 @@ export default new Vuex.Store({
   state: {
     token:'',
     username:'',
+    _id:''
   },
   mutations: {
     add_login_user(state,payload){
       state.username = payload.username
       state.token = payload.token
+      state._id = payload._id
       sessionStorage.setItem('username',payload.username)
       sessionStorage.setItem('token',payload.token)
     },

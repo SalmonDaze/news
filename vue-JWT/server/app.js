@@ -3,18 +3,62 @@ const app = express()
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+
 const router = express.Router()
+let Schema = mongoose.Schema
 
 const SECRET = 'badapple'
 
 mongoose.connect('mongodb://localhost:27017/test',{useNewUrlParser:true})
 
-let Schema = mongoose.Schema
 
-let User = mongoose.model('user',new Schema({
+let User = mongoose.model('User',new Schema({
     username: String,
     password: String,
+    posts:[{
+        type:Schema.Types.ObjectId,
+        ref:'Post'
+    }],
 }))
+
+let Post = mongoose.model('Post',new Schema({
+    poster:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    },
+    title: String,
+    content: String,
+
+}))
+
+router.post('/postArticle',(req,res,next)=>{
+    let req_info = JSON.parse(Object.keys(req.body)[0])
+    console.log(req_info)
+    Post.create({title:req_info.title,content:req_info.content,poster:req_info._id}).then(result=>{
+        console.log(result)
+        User.findOne({_id:req_info._id}).then(doc=>{
+            doc.posts.push(result._id)
+            doc.save()
+        })
+        res.json({
+            code:200,
+            message:'发送成功！'
+        })
+    })
+})
+
+router.get('/getData',(req,res,next)=>{
+    User.find({}).populate({path:'posts',select:{title:1,content:1}}).exec((err,doc)=>{
+        if(err) console.log(err)
+        res.json({
+            code:200,
+            message:'查询成功!',
+            doc:doc
+        })
+    })
+})
+
+
 
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -49,7 +93,7 @@ app.post('/login',(req,res)=>{
         if(!doc) res.json({message:'账户或密码错误'})
         else{
             let token = jwt.sign(userInfo, app.get('secret'), {
-                expiresIn : 10// 授权时效24小时
+                expiresIn : 60*60*24// 授权时效24小时
           });
             res.json({message:'欢迎使用API',token:token,user:doc})
         }

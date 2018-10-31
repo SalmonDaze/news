@@ -7,13 +7,14 @@
         <input type="password" v-model='password'>
         <input type="button" value='注册' @click='register'>
         <input type="button" value='登录' @click='login'>
-        <input type="button" value='log' @click='log'>
+        
         <br/>
     </div>
     <div v-else>
       <span>欢迎登陆{{username}}</span>
     </div>
         <router-link :to="{name:'page'}">have token?</router-link>
+        <input type="button" value='log' @click='log'>
   </div>
 </template>
 
@@ -32,7 +33,7 @@ export default {
   }),
   methods:{
     log: function(){
-      console.log(this.$store.state.token)
+      console.log(this.$store.state)
     },
     register: function(){
       let username = this.account
@@ -69,9 +70,11 @@ export default {
         console.log(res)
         let username = res.data.user.username
         let token = res.data.token
+        let _id = res.data.user._id
         this.$store.commit('add_login_user',{
           username:username,
-          token:token
+          token:token,
+          _id:_id
         })
         })
     }
