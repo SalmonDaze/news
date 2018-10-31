@@ -34,6 +34,7 @@ let Post = mongoose.model('Post',new Schema({
 router.post('/postArticle',(req,res,next)=>{
     let req_info = JSON.parse(Object.keys(req.body)[0])
     console.log(req_info)
+    //存入发送者的_id 以便关联查询
     Post.create({title:req_info.title,content:req_info.content,poster:req_info._id}).then(result=>{
         console.log(result)
         User.findOne({_id:req_info._id}).then(doc=>{
