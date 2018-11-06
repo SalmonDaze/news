@@ -103,7 +103,6 @@ app.post('/login',(req,res)=>{
 })
 
 router.use(function(req, res, next) {
-    // 拿取token 数据 按照自己传递方式写
     var token = req.header('Authentication-token');
     if (token) {      
         // 解码 token (验证 secret 和检查有效期（exp）)
