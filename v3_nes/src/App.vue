@@ -1,12 +1,6 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <div class='send_message' v-show='chat_show'>
-      <el-button @click='checkname'>发送消息</el-button>
-    </div>
-    <chat v-if='sw' :sender='sender' :recipient="recipient" :avatar='target_avatar' :name='recipient'>
-      <template slot='close'><span class='close' @click='sw = !sw'><i class='el-icon-close'></i></span></template>
-    </chat>
   </div>
 </template>
 <script>

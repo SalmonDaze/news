@@ -2,8 +2,8 @@
     <div class='article_container'>
         <navbar>
             <template slot='header'>
-        <router-link :to="{path:'/'}"><span style='color:black;'>
-          <img src='../../assets/reimu.png' style='height:35px;vertical-align:middle;margin-right:10px;'>Bad Apple!</span></router-link>
+        <router-link :to="{path:'/'}"><span  style='height:35px;vertical-align:middle;margin-right:10px;'>
+          Neet 新闻网</span></router-link>
       </template>
         </navbar>
         <div class="article">
@@ -61,12 +61,6 @@
                         </div>
                 </div>
             </el-container>
-        </div>
-        <div class='author_info'>
-            <img :src="avatar" class='avatar'>
-            <span style='margin-left:10px;'>{{name}}</span>
-            <br/>
-            <el-button type="primary" @click='$router.push({path:`/user/${name}`})'>个人主页</el-button>
         </div>
     </div>
 </template>
@@ -228,8 +222,8 @@ a{
         background: white;
         float:left;
         .article{
-            width:50%;
-            margin-left:250px;
+            width:80%;
+            margin-left:550px;
             margin-top:60px;
             .el-container{
                 margin-top:50px;

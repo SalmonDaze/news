@@ -2,13 +2,23 @@
   <div class="home">
     <navbar>
       <template slot='header'>
-        <router-link :to="{path:'/'}"><span style='color:black;'>
-          <img src='../../assets/reimu.png' style='height:35px;vertical-align:middle;margin-right:10px;'>Bad Apple!</span></router-link>
+        <router-link :to="{path:'/'}"><span style='color:black;'>Neet 新闻网</span></router-link>
+      </template>
+      <template slot='footer'>
+        <div v-if='!userCookie' class='status_bar'>
+          请先<router-link :to="{path:'/login'}">登陆</router-link>或<router-link :to="{path:'/register'}">注册</router-link>
+        </div>
+        <div v-else class='status_bar'>
+          {{userCookie.username}}
+          <span>{{userCookie.isAdmin ? '管理员' : '普通用户'}}</span>
+          <span v-if='userCookie.isAdmin' style='margin-left:30px;'><router-link :to="{path:'/admin/info'}">管理页面</router-link></span>
+          <span><a style='margin-left:30px;' @click='logout'>用户登出</a></span>
+        </div>
       </template>
     </navbar>
     <el-row type="flex" class='grid'>
-      <el-col :span="2"></el-col>
-      <el-col :span="14">
+      <el-col :span="4"></el-col>
+      <el-col :span="16">
         <div id='article'>
             <div v-if='articleList.length == 0' class='none_article'>
               当前无内容
@@ -21,7 +31,6 @@
                     <el-main class='article_content' v-html='article.content'></el-main>
                     <el-footer class='article_info'>
                     <span>发布日期 {{article.create_at}}</span>
-                    <span>  |  作者 {{article.author.name}}</span>
                     <span>  |  留言 {{article.comment.length}}</span>
                     <span>  |  浏览次数 {{article.views}}</span>
                     <span>  |  赞 {{article.like}}</span>
@@ -33,28 +42,7 @@
             </el-pagination>
         </div>
       </el-col>
-      <el-col :span="1"></el-col>
-      <el-col :span="6">
-          <el-container class='user_Info'>
-            <el-header class='user_Info_head' style='height:100px;' v-if='!userCookie'>登陆</el-header>
-            <el-header class='user_Info_head' style='height:100px;' v-else>欢迎</el-header>
-            <div class='hr'></div> 
-            <el-main class='user_Info_container' v-if='!userCookie' style='height:100px;'>
-              请先<router-link :to="{path:'/login'}">登陆</router-link>或<router-link :to="{path:'/register'}">注册</router-link>
-            </el-main>
-            <el-main class='user_Info_container' v-else>
-              <img :src='this.$store.avatar' class='avatar'>
-              <br/>
-              <span>欢迎登陆</span>
-              {{userCookie.username}}
-              <br/>
-              <span>当前用户组为{{userCookie.isAdmin ? '管理员' : '普通用户'}}</span>
-              <br/>
-              <span><router-link :to="{name:'userPage',params:{id:userCookie.username}}">个人页面</router-link></span>
-              <span v-if='userCookie.isAdmin' style='margin-left:30px;'><router-link :to="{path:'/admin/info'}">管理页面</router-link></span>
-              <span><a style='margin-left:30px;' @click='logout'>用户登出</a></span>
-            </el-main>
-          </el-container>
+      <el-col :span="2">
       </el-col>
     </el-row>
   </div>
@@ -145,6 +133,16 @@ export default {
     }
     background: rgb(230,230,230);
     min-height:500px;
+    .status_bar{
+      margin-top:15px;
+      font-size:1.2em;
+      a{
+        color:#67C23A;
+        &:hover{
+          cursor: pointer;
+        }
+      }
+    }
     .none_article{
       background: white;
       height: 170px;
@@ -152,47 +150,11 @@ export default {
       padding-top: 130px;
       margin-top:5px;
     }
+    .navbar{
+      background: rgb(220, 220, 220);
+    }
       .grid{
       margin-top:50px;
-      .user_Info{
-        background: white;
-        border-radius: 5px;
-        transition: 0.3s;
-          &:hover{
-            transform: translateY(-6px);
-            box-shadow: 0 15px 35px 0 rgba(24, 44, 79, 0.15);
-            
-          }
-          .hr{
-            width:82%;
-            height: 1px;
-            margin-left:30px;
-            background: #67C23A;
-            margin-top:-10px;
-          }
-          .user_Info_head{
-            text-align:left;
-            margin-left:25px;
-            font-size: 1.3em;
-            line-height: 100px
-          }
-          .user_Info_container{
-            height: 320px;
-            line-height: 50px;
-            text-align: left;
-            padding-left: 50px;
-            .avatar{
-              width:100px;
-              height: 100px;
-              border-radius: 10px;
-            }
-            a{
-              color:#67C23A;
-              text-decoration: none;
-              cursor:pointer;
-            }
-          }
-        }
     }
     #article{
         width:100%;
@@ -207,11 +169,6 @@ export default {
                 width:100%;
                 height:300px;
                 background:white;
-                transition: .3s;
-                &:hover{
-                  transform: translateY(-4px);
-                  box-shadow: 0 15px 35px 0 rgba(24, 44, 79, 0.15);
-                }
                 .article_head{
                     padding-top:25px;
                     font-size:1.5em;
