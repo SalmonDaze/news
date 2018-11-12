@@ -2,16 +2,16 @@
     <div class='article_add'>
         <div class='text-input-area'>
             <div class='input_title'>
-                修改文章
+                修改新闻
             </div>
             <div class="hr"></div>
             <br/>
-            <span>文章板块：</span>
+            <span>新闻板块：</span>
             <select v-model='category' class='article_catogory'>
                 <option :value="categorys" v-for="categorys in categoryList" :key='categorys'>{{categorys}}</option>
             </select>
             <br>
-            <span>文章标签：</span>
+            <span>新闻标签：</span>
             <input class="tags_input"  @keyup.enter='addtags()' v-model='tags_input'>
             <el-tag v-for="tag in tags" :key="tag.name" :type="tag.type" closable @close='handleClose(tag)'>
                 {{tag.name}}
@@ -82,7 +82,7 @@ export default{
             let category = this.category
             if( title == '' || content == '' ){
                 this.$message({
-                message: '文章内容不完整',
+                message: '新闻内容不完整',
                 type: 'warning'
                 })
                 return

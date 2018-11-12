@@ -3,13 +3,13 @@
             <div v-if='!this.$route.params.id'>
                 <template>
                 <el-table :data="tableData" border style="width: 100%">
-                    <el-table-column prop="title" label="文章名称" width="180">
+                    <el-table-column prop="title" label="新闻名称" width="180">
                     </el-table-column>
                     <el-table-column prop="author" label="作者" width="180">
                     </el-table-column>
-                    <el-table-column prop="category" label="文章板块" width='140'>
+                    <el-table-column prop="category" label="新闻板块" width='140'>
                     </el-table-column>
-                    <el-table-column prop="content" label="文章内容">
+                    <el-table-column prop="content" label="新闻内容">
                     </el-table-column>
                     <el-table-column prop="revise" label="操作" width='150'>
                         <template slot-scope="scope">

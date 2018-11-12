@@ -37,7 +37,7 @@ export default{
                 modules:{
                         toolbar:toolbarOptions
                     },
-                    placeholder:'请输入文章内容...'
+                    placeholder:'请输入新闻内容...'
             },
             content:'',
             title:'',
@@ -73,7 +73,7 @@ export default{
             let category = this.category
             if( title == '' || content == '' || category == ''){
                 this.$message({
-                message: '文章内容不完整',
+                message: '新闻内容不完整',
                 type: 'warning'
                 })
                 return
@@ -97,11 +97,11 @@ export default{
                 }
             })
             if(res.data.code == 1){
-                this.$message.error(`文章发布失败`)
+                this.$message.error(`新闻发布失败`)
                 return
             }else{
                 this.$message({
-                message: '文章发布成功',
+                message: '新闻发布成功',
                 type: 'success'
                 })
                 this.btnswitch = true;

@@ -3,11 +3,11 @@
             <div>
                 <template>
                 <el-table :data="tableData" border style="width: 100%">
-                    <el-table-column prop="title" label="文章标题" width="180">
+                    <el-table-column prop="title" label="新闻标题" width="180">
                     </el-table-column>
                     <el-table-column prop="author" label="作者" width="180">
                     </el-table-column>
-                    <el-table-column prop="content" label="文章内容">
+                    <el-table-column prop="content" label="新闻内容">
                     </el-table-column>
                     <el-table-column prop="revise" label="操作" width='80'>
                         <template slot-scope="scope">
