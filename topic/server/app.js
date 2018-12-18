@@ -18,6 +18,10 @@ app.all('*', function(req, res, next) {
     next()
 })
 
+let Sql = {
+    addSql: 'INSERT INTO user(name, createAt, sex, avatar, admin ,password) VALUES(?,?,?,?,?,?)',
+}
+
 let resmsg = function(code, data, message = '返回成功'){
     let res = {
         code: code,
@@ -27,10 +31,39 @@ let resmsg = function(code, data, message = '返回成功'){
     return res
 }
 
+function formatTime(){
+    let date = new Date()
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    return `${year}-${month}-${day}`
+}
+
 router.post('/register', function(req, res){
     let data = JSON.parse(Object.keys(req.body)[0])
     if(/^[a-zA-Z0-9]{4,16}/.test(data.account)){
-        console.log('匹配')
+        if( data.password === data.repassword ){
+            let addParams = [data.account, formatTime(), 'male', 'undefined', 0, data.password]
+            connection.query('select name from user', (err, rows, fields)=>{
+                if(err) throw err
+                let flag = false
+                for(let i=0;i<rows.length;i++){
+                    if(data.account == rows[i].name){
+                        res.json(resmsg(1, null, '用户名已被注册'))
+                        flag = true
+                        return
+                    }
+                }
+                if(!flag){
+                    connection.query(Sql.addSql,addParams, (err, rows, fields)=>{
+                        if(err) throw err
+                        res.json(resmsg(200, null))
+                    })
+                }
+            })
+            
+        }
+        
     }else{
         res.json(resmsg(1, null, '失败'))
     }
