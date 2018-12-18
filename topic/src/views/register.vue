@@ -6,12 +6,12 @@
                     <span>账 号 : </span><el-input v-model="account" placeholder="请输入账号"></el-input>
                 </div>
                 <div class='form_passwd'>
-                    <span>密 码 : </span><el-input v-model="passwd" placeholder="请输入密码"></el-input>
+                    <span>密 码 : </span><el-input type='password' v-model="passwd" placeholder="请输入密码"></el-input>
                 </div>
                 <div class='form_repasswd'>
-                    <span>确认密码 : </span><el-input v-model="repasswd" placeholder="请输入密码"></el-input>
+                    <span>确认密码 : </span><el-input type='password' v-model="repasswd" placeholder="请输入密码"></el-input>
                 </div>
-                <el-button type="primary" class='register_btn'>注册</el-button>
+                <el-button type="primary" class='register_btn' @click='register'>注册</el-button>
             </template>
             <template slot='footer'>
                 <router-link :to="{name:'login'}" class='link-login'>已有账号，立刻登陆</router-link>
@@ -23,6 +23,7 @@
 </template>
 <script>
 import vaildForm from '../components/vaildForm.vue'
+import { api } from '../api.js'
 export default {
     name: 'register',
     components:{
@@ -36,7 +37,15 @@ export default {
         }
     },
     methods:{
-
+        async register(){
+            let data = {
+                account: this.account,
+                password: this.passwd,
+                repassword: this.repasswd
+            }
+            let res = await api.post('http://localhost:3000/api/register', data)
+            console.log(res)
+        }
     }
 }
 </script>

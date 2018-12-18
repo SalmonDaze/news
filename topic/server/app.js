@@ -18,12 +18,26 @@ app.all('*', function(req, res, next) {
     next()
 })
 
+let resmsg = function(code, data, message = '返回成功'){
+    let res = {
+        code: code,
+        data: data,
+        message: message
+    }
+    return res
+}
+
 router.post('/register', function(req, res){
-    console.log(req.body)
-    res.json({
-        code:200,
-        message:'通过'
-    })
+    let data = JSON.parse(Object.keys(req.body)[0])
+    if(/^[a-zA-Z0-9]{4,16}/.test(data.account)){
+        console.log('匹配')
+    }else{
+        res.json(resmsg(1, null, '失败'))
+    }
+})
+
+router.post('/login', function(req, res){
+
 })
 
 app.use('/api', router)
