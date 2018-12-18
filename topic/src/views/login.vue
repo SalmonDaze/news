@@ -8,7 +8,7 @@
                 <div class='form_passwd'>
                     <span>密 码 : </span><el-input v-model="password" placeholder="请输入密码"></el-input>
                 </div>
-                <el-button type="primary" class='login_btn'>登陆</el-button>
+                <el-button type="primary" class='login_btn' @click='login'>登陆</el-button>
             </template>
             <template slot='footer'>
                 <router-link :to="{name:'register'}" class='link_login'>还没账号？立刻注册</router-link>
@@ -20,6 +20,7 @@
 </template>
 <script>
 import vaildForm from '../components/vaildForm.vue'
+import { api } from '../api.js'
 export default {
     name: 'login',
     data(){
@@ -30,6 +31,16 @@ export default {
     },
     components:{
         vaildForm,
+    },
+    methods:{
+        async login(){
+            let data = {
+                account: this.account,
+                password: this.password
+            }
+            let res = await api.post('http://localhost:3000/api/register', data)
+            console.log(api)
+        }
     }
 }
 </script>

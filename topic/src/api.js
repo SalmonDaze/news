@@ -1,9 +1,17 @@
 import axios from 'axios'
 
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 const api = {
     async get(url, data){
         try{
-            let res = await axios.get(url, {params: data})
+            let res = await axios({
+                url: url,
+                data: data,
+                method:'GET',
+                headers:{
+                'Content-Type' : 'application/x-www-form-urlencoded'
+                }
+            })
             res = res.data
             return new Promise((resolve, reject)=>{
                 if (res.code === 0){
@@ -20,7 +28,11 @@ const api = {
         try{
             let res = await axios({
                 url: url,
-                data: data
+                method:'POST',
+                data: data,
+                headers:{
+                'Content-Type' : 'application/x-www-form-urlencoded'
+                }
             })
             res = res.data
             return new Promise((resolve, reject)=>{
