@@ -4,6 +4,11 @@
       <el-col :span="4"><div class="grid-content bg-purple">&nbsp;</div></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple">
+          <div>
+            <router-link :to="{name:'crm'}">
+              <el-button type='success' style='width:200px;height:50px;'>后台！！</el-button>
+            </router-link>
+          </div>
           <index />
         </div>
       </el-col>

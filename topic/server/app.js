@@ -3,14 +3,17 @@ const app = express()
 const bodyParser = require('body-parser')
 const connection = require('./database.js').connection
 const router = express.Router()
+const jwt = require('jsonwebtoken')
 
+const SECRET = 'testjsonwebtoken'
 
+app.set('secret', SECRET)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:8080")
-    res.header("Access-Control-Allow-Headers", "X-Requested-With")
+    res.header("Access-Control-Allow-Headers", "*")
     res.header('Access-Control-Allow-Credentials', true)
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS")
     res.header("X-Powered-By",' 3.2.1')
@@ -70,7 +73,27 @@ router.post('/register', function(req, res){
 })
 
 router.post('/login', function(req, res){
+    let data = JSON.parse(Object.keys(req.body)[0])
+    let flag = false
+    connection.query('select name, password from user', (err, rows, fields)=>{
+        if(err) throw err
 
+        for(let i = 0 ; i < rows.length ; i++){
+            if( rows[i].name === data.account ){
+                if( rows[i].password === data.password){
+                    flag = true
+                }
+            }
+        }
+        if(flag){
+            let token = jwt.sign(data, app.get('secret'), {
+                expiresIn : 60*60*24
+            })
+            res.json({msg:resmsg(200, {token: token}, '欢迎登陆！')})
+            return
+        }
+        res.json(resmsg(1, null, '账号或者密码错误！'))
+    })
 })
 
 app.use('/api', router)

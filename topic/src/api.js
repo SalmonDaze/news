@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 const api = {
     async get(url, data){
         try{

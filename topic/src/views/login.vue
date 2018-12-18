@@ -21,6 +21,7 @@
 <script>
 import vaildForm from '../components/vaildForm.vue'
 import { api } from '../api.js'
+import { mapMutations, mapState } from 'vuex'
 export default {
     name: 'login',
     data(){
@@ -32,14 +33,29 @@ export default {
     components:{
         vaildForm,
     },
+    computed:mapState([
+        'token',
+        'username'
+    ]),
     methods:{
+        ...mapMutations([
+            'login',
+            'logout'
+        ]),
         async login(){
             let data = {
                 account: this.account,
                 password: this.password
             }
-            let res = await api.post('http://localhost:3000/api/register', data)
-            console.log(api)
+            let res = await api.post('http://localhost:3000/api/login', data)
+            console.log(res)
+            if( res.msg.code === 200 ){
+                let token = res.msg.data.token
+                this.$store.commit('login',{
+                    token: token,
+                    username: this.account
+                })
+            }
         }
     }
 }
