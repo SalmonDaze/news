@@ -14,7 +14,7 @@
             <div v-else>
               <div style='margin-top:350px;color:purple;'>
                 <h3>{{username}} 欢迎登陆！</h3>
-                <router-link :to="{path:'/'}" style='text-decoration:none;color:black;'>进入个人主页🏠</router-link>
+                <router-link :to="{name:'reviseInfo'}" style='text-decoration:none;color:black;'>修改个人资料🏠</router-link>
               </div>
             </div>
           </div>
@@ -29,6 +29,7 @@
 // @ is an alias to /src
 import index from '@/components/index.vue'
 import { mapState } from 'vuex';
+
 export default {
   name: 'home',
   components: {

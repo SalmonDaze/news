@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import register from './views/register.vue'
 import login from '@/views/login.vue'
 import crm from '@/views/CRM.vue'
+import reviseInfo from '@/views/reviseInfo.vue'
 import store from './store'
 
 Vue.use(Router)
@@ -33,6 +34,13 @@ export default new Router({
       },
       name: 'crm',
       component: crm
+    },{
+      path:'/reviseInfo',
+      meta:{
+        requiresAuth: true,
+      },
+      name:'reviseInfo',
+      component: reviseInfo
     }
   ]
 })

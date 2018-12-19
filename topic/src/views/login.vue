@@ -48,6 +48,7 @@ export default {
                 password: this.password
             }
             let res = await api.post('http://localhost:3000/api/login', data)
+            console.log(res)
             if( res.msg.code === 200 ){
                 let token = res.msg.data.token
                 this.$store.commit('login',{
