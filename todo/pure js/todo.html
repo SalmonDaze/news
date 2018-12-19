@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            width:50%;
+            height:1000px;
+            margin:0 auto;
+        }
+        .todo_input{
+            width:500px;
+            height: 25px;
+        }
+        body{
+            background:#d4d4d4;
+        }
+        .container2{
+            margin-top:20px;
+        }
+        ul{
+            list-style-type: none;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class='container'>
+        <h3>事项列表</h3>
+        <h4>添加事项</h4>
+        <input type="text" placeholder="输入事项后，按回车确认" class='todo_input' id='todo_add' />
+        <div class='container2'>
+            <input type="radio" name='switch' id='all' value='所有事项' checked='checked'><label for='all'>所有事项</label>
+            <input type="radio" name='switch' id='com' value='已完成事项' ><label for='com'>已完成事项</label>
+            <input type="radio" name='switch' id='w' value='未完成事项' ><label for='w'>未完成事项</label>
+            <ul id='todo_list'>
+            </ul>
+        </div>
+    </div>
+    <script>
+        class Todo{
+            constructor(el, all, com ,w){
+                this.el = document.getElementById(el)
+                this.input = document.getElementById('todo_add')
+                this.li = this.el.querySelectorAll('li')
+                this.all = document.getElementById(all)
+                this.com = document.getElementById(com)
+                this.w = document.getElementById(w)
+
+                this.count = 0
+                this.init()
+            }
+
+            init(){
+                let _this = this, value
+                this.input.onkeydown = function(e){
+                    if( e.key === 'Enter' ){
+                        if(this.value == ''){
+                            alert('请输入内容')
+                            return
+                        }
+                        value = this.value
+                        _this.addItem(value)
+                        value = ''
+                    }
+                }
+                this.all.addEventListener('click', function(){
+                    _this.render('all')
+                })
+                this.com.addEventListener('click', function(){
+                    _this.render('com')
+                })
+                this.w.addEventListener('click', function(){
+                    _this.render('w')
+                })
+                this.render('all')
+            }
+
+            addItem(value){
+                let _this = this
+                let newtodo = document.createElement('li')
+                let text = document.createTextNode(value)
+                let btn = document.createElement('BUTTON')
+                let x = document.createTextNode('X')
+                let mydiv = document.createElement('div')
+                btn.appendChild(x)
+                newtodo.complete = false
+                newtodo.index = this.count
+                btn.index = this.count
+                mydiv.appendChild(text)
+                mydiv.appendChild(btn)
+                newtodo.appendChild(mydiv)
+                this.el.appendChild(newtodo)
+                this.input.value = ''
+                
+                btn.addEventListener('click', function(event){
+                    let child
+                    event.stopPropagation()
+                    for(let i = 0;i<_this.el.children.length;i++){
+                        if(_this.el.children[i].index == this.index){
+                            child = _this.el.children[i]
+                        }
+                    }
+                    _this.removeItem(child)
+                })
+                
+                newtodo.addEventListener('click', function(){
+                    this.complete = !this.complete
+                    _this.switchState()
+                })
+
+                this.switchState()
+
+                this.li = this.el.querySelectorAll('li')
+                this.count++
+            }
+
+            render(state){
+
+                let length = this.el.children.length
+                for(let i=0;i<length;i++){
+                    this.el.removeChild(this.el.children[0])
+                }
+
+                switch(state){
+                    case 'all':
+                        for(let i=0;i<this.li.length;i++){
+                            this.el.appendChild(this.li[i])
+                        }
+                        break;
+                    case 'com':
+                        for(let i=0;i<this.li.length;i++){
+                            if(this.li[i].complete){
+                                this.el.appendChild(this.li[i])
+                            }
+                        }
+                        break;
+                    case 'w':
+                        for(let i=0;i<this.li.length;i++){
+                                if(!this.li[i].complete){
+                                    this.el.appendChild(this.li[i])
+                                }
+                            }
+                        break;
+                }
+            }
+
+            removeItem(child){
+                this.el.removeChild(child)
+                this.li = this.el.querySelectorAll('li')
+            }
+
+            switchState(){
+                for(let i=0 ; i<this.li.length ; i++){
+                    this.li[i].style.backgroundColor = this.li[i].complete ? 'skyblue' : '#d4d4d4'
+                }
+            }
+
+        }
+
+        let todo = new Todo('todo_list', 'all', 'com', 'w')
+    </script>
+</body>
+</html>

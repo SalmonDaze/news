@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+    <style>
+        #app{
+            width:50%;
+            height:1000px;
+            margin:0 auto;
+        }
+        .todo_input{
+            width:500px;
+            height: 25px;
+        }
+        body{
+            background:#d4d4d4;
+        }
+        .container2{
+            margin-top:20px;
+        }
+        ul{
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+    <div id='app'>
+        <h3>事项列表</h3>
+        <h4>添加事项</h4>
+        <input type="text" placeholder="输入事项后，按回车确认" class='todo_input' id='todo_add' @keydown.Enter='addTodo()' v-model='plan'/>
+        <div class='container2'>
+            <input type="radio" name='switch' id='all' value='所有事项' checked='checked' @click="switchq='all'"><label for='all'>所有事项</label>
+            <input type="radio" name='switch' id='com' value='已完成事项'  @click="switchq='com'"><label for='com'>已完成事项</label>
+            <input type="radio" name='switch' id='w' value='未完成事项'  @click="switchq='w'"><label for='w'>未完成事项</label>
+            <ul id='todo_list' v-if="switchq == 'all'">
+                <li v-for='todo, index) in todoList' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
+                    {{todo.plan}}
+                    <button @click.stop='removeItem(todo)'>X</button>
+                </li>
+            </ul>
+            <ul id='todo_list' v-else-if="switchq == 'com'">
+                <li v-for='todo in completeArray' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
+                    {{todo.plan}}
+                    <button @click.stop='removeItem(todo)'>X</button>
+                </li>
+            </ul>
+            <ul id='todo_list' v-else>
+                <li v-for='todo in NotfinishArray' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
+                    {{todo.plan}}
+                    <button @click.stop='removeItem(todo)'>X</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                todoList:[],
+                plan:'',
+                switchq:'all',
+                count:0,
+            },
+            methods:{
+                addTodo(){
+                    if(this.plan === ''){
+                        alert('请输入内容')
+                        return
+                    }
+                    this.todoList.push({
+                        index: this.count,
+                        plan: this.plan,
+                        complete: false
+                    })
+                    this.plan = ''
+                    this.count++
+                },
+                switchState(index){
+                    this.todoList[this.todoList.indexOf(index)].complete = !this.todoList[this.todoList.indexOf(index)].complete
+                },
+                removeItem(index){
+                    this.todoList.splice(this.todoList.indexOf(index), 1)
+                }
+            },
+            computed:{
+                completeArray(){
+                    let complete = this.todoList.filter((todo)=>{
+                        return todo.complete
+                    })
+                    return complete
+                },
+                NotfinishArray(){
+                    let NotfinishArray = this.todoList.filter((todo)=>{
+                        return !todo.complete
+                    })
+                    return NotfinishArray   
+                }
+            }
+        })    
+    </script>
+</body>
+</html>
