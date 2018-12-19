@@ -23,6 +23,8 @@ app.all('*', function(req, res, next) {
 
 let Sql = {
     addSql: 'INSERT INTO user(name, createAt, sex, avatar, admin ,password) VALUES(?,?,?,?,?,?)',
+    getUserById : 'SELECT * From user WHERE name = ?',
+    queryAll: 'SELECT * FROM user'
 }
 
 let resmsg = function(code, data, message = '返回成功'){
@@ -111,6 +113,15 @@ router.post('/login', function(req, res){
             return
         }
         res.json({msg:resmsg(1, {}, '账号或者密码错误！')})
+    })
+})
+
+router.post('/getUser', function(req, res){
+    console.log(req.body)
+    let data = JSON.parse(Object.keys(req.body)[0])
+    connection.query(Sql.getUserById, [data.username], (err, rows, fields)=>{
+        console.log(rows)
+        res.json(rows)
     })
 })
 
