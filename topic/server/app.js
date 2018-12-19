@@ -42,6 +42,24 @@ function formatTime(){
     return `${year}-${month}-${day}`
 }
 
+router.use(function(req, res, next) {
+    var token = req.header('Authentication-token');
+    if (token) {      
+        
+        jwt.verify(token, app.get('secret'), function(err, decoded) {      
+              if (err) {
+            return res.status(401).json({false:true,message:'token失效'});    
+              } else {
+                
+                req.decoded = decoded;  
+                next();
+          }
+        });
+      } else {
+        return res.json({code:1,message:'未找到'})
+      }
+});
+
 router.post('/register', function(req, res){
     let data = JSON.parse(Object.keys(req.body)[0])
     if(/^[a-zA-Z0-9]{4,16}/.test(data.account)){
@@ -92,7 +110,7 @@ router.post('/login', function(req, res){
             res.json({msg:resmsg(200, {token: token}, '欢迎登陆！')})
             return
         }
-        res.json(resmsg(1, null, '账号或者密码错误！'))
+        res.json({msg:resmsg(1, null, '账号或者密码错误！')})
     })
 })
 

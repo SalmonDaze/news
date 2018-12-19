@@ -48,12 +48,23 @@ export default {
                 password: this.password
             }
             let res = await api.post('http://localhost:3000/api/login', data)
-            console.log(res)
             if( res.msg.code === 200 ){
                 let token = res.msg.data.token
                 this.$store.commit('login',{
                     token: token,
                     username: this.account
+                })
+                this.$message({
+                    showClose: true,
+                    message: '登陆成功！',
+                    type: 'success'
+                })
+                this.$router.push({path: '/'})
+            }else{
+                this.$message({
+                    showClose: true,
+                    message: '用户名或者密码错误',
+                    type: 'error',
                 })
             }
         }

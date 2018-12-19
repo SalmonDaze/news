@@ -8,8 +8,16 @@
             <router-link :to="{name:'crm'}">
               <el-button type='success' style='width:200px;height:50px;'>后台！！</el-button>
             </router-link>
+            <div v-if='!token'>
+              <index />
+            </div>
+            <div v-else>
+              <div style='margin-top:350px;color:purple;'>
+                <h3>{{username}} 欢迎登陆！</h3>
+                <router-link :to="{path:'/'}" style='text-decoration:none;color:black;'>进入个人主页🏠</router-link>
+              </div>
+            </div>
           </div>
-          <index />
         </div>
       </el-col>
       <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
@@ -20,12 +28,16 @@
 <script>
 // @ is an alias to /src
 import index from '@/components/index.vue'
-
+import { mapState } from 'vuex';
 export default {
   name: 'home',
   components: {
     index
-  }
+  },
+  computed:mapState({
+    token: state => state.token,
+    username: state => state.username,
+  })
 }
 </script>
 <style lang="scss" scoped>

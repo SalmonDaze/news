@@ -16,7 +16,7 @@ export default {
 <style scoped lang="scss">
 .hello{
   margin-right:0px;
-  margin-top:560px;
+  margin-top:350px;
   margin-left:-130px;
   .login_content{
     width: 500px;
