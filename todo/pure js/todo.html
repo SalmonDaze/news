@@ -49,7 +49,7 @@
                 this.all = document.getElementById(all)
                 this.com = document.getElementById(com)
                 this.w = document.getElementById(w)
-
+                this.state = 'all'
                 this.count = 0
                 this.init()
             }
@@ -64,19 +64,25 @@
                         }
                         value = this.value
                         _this.addItem(value)
+                        _this.render(_this.state)
                         value = ''
+                        console.log(_this.state)
                     }
+                    
                 }
                 this.all.addEventListener('click', function(){
-                    _this.render('all')
+                    _this.state = 'all'
+                    _this.render(_this.state)
                 })
                 this.com.addEventListener('click', function(){
-                    _this.render('com')
+                    _this.state = 'com'
+                    _this.render(_this.state)
                 })
                 this.w.addEventListener('click', function(){
-                    _this.render('w')
+                    _this.state = 'w'
+                    _this.render(_this.state)
                 })
-                this.render('all')
+                this.render(this.state)
             }
 
             addItem(value){
@@ -113,14 +119,17 @@
                 })
 
                 this.switchState()
+                let liArray = Array.from(this.li)
+                liArray.push(newtodo)
+                this.li = liArray
 
-                this.li = this.el.querySelectorAll('li')
                 this.count++
             }
 
             render(state){
 
                 let length = this.el.children.length
+
                 for(let i=0;i<length;i++){
                     this.el.removeChild(this.el.children[0])
                 }
@@ -149,8 +158,16 @@
             }
 
             removeItem(child){
+                let liArray = Array.from(this.li)
                 this.el.removeChild(child)
-                this.li = this.el.querySelectorAll('li')
+                for(let i=0 ; i < liArray.length ; i++){
+                    console.log(liArray[i])
+                    if( liArray[i].index === child.index ){
+                        liArray.splice(i, 1)
+                        console.log(liArray)
+                    }
+                }
+                this.li = liArray
             }
 
             switchState(){
@@ -158,7 +175,6 @@
                     this.li[i].style.backgroundColor = this.li[i].complete ? 'skyblue' : '#d4d4d4'
                 }
             }
-
         }
 
         let todo = new Todo('todo_list', 'all', 'com', 'w')
