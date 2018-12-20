@@ -21,6 +21,7 @@ export default new Vuex.Store({
     logout(state){
       state.token = ''
       state.username = ''
+      state.avatar = ''
       sessionStorage.removeItem('username')
       sessionStorage.removeItem('token')
       sessionStorage.removeItem('avatar')

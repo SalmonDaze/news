@@ -38,6 +38,7 @@
                     </div>
                 </div>
             </template>
+            <template slot='footer'><router-link :to="{path:'/'}">返回首页</router-link></template>
         </vaild-form>
     </div>
 </template>
@@ -88,6 +89,9 @@ export default {
             console.log(file)
             this.imageUrl = URL.createObjectURL(file.raw)
             this.imageData = this.imageUrl
+            this.$store.avatar = this.imageUrl
+            sessionStorage.removeItem('avatar')
+            sessionStorage.setItem('avatar', this.imageUrl)
             console.log(this.imageUrl)
         }
     },
