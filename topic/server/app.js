@@ -4,8 +4,14 @@ const bodyParser = require('body-parser')
 const connection = require('./database.js').connection
 const router = express.Router()
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
+const multer = require('multer')
 
 const SECRET = 'testjsonwebtoken'
+
+let upload = multer({
+    dest: './uploads'
+})
 
 app.set('secret', SECRET)
 app.use(bodyParser.json())
@@ -24,7 +30,8 @@ app.all('*', function(req, res, next) {
 let Sql = {
     addSql: 'INSERT INTO user(name, createAt, sex, avatar, admin ,password) VALUES(?,?,?,?,?,?)',
     getUserById : 'SELECT * From user WHERE name = ?',
-    queryAll: 'SELECT * FROM user'
+    queryAll: 'SELECT * FROM user',
+    updateSql: 'UPDATE user SET avatar = ? WHERE name = ?',
 }
 
 let resmsg = function(code, data, message = '返回成功'){
@@ -66,7 +73,7 @@ router.post('/register', function(req, res){
     let data = JSON.parse(Object.keys(req.body)[0])
     if(/^[a-zA-Z0-9]{4,16}/.test(data.account)){
         if( data.password === data.repassword ){
-            let addParams = [data.account, formatTime(), 'male', 'undefined', 0, data.password]
+            let addParams = [data.account, formatTime(), 'male', data.avatar, 0, data.password]
             connection.query('select name from user', (err, rows, fields)=>{
                 if(err) throw err
                 let flag = false
@@ -97,7 +104,6 @@ router.post('/login', function(req, res){
     let flag = false
     connection.query('select name, password from user', (err, rows, fields)=>{
         if(err) throw err
-
         for(let i = 0 ; i < rows.length ; i++){
             if( rows[i].name === data.account ){
                 if( rows[i].password === data.password){
@@ -120,8 +126,47 @@ router.post('/getUser', function(req, res){
     console.log(req.body)
     let data = JSON.parse(Object.keys(req.body)[0])
     connection.query(Sql.getUserById, [data.username], (err, rows, fields)=>{
-        console.log(rows)
+        
+        if(err) throw err
+
+        res.sendFile( __dirname + '/uploads' + data.username + '.jpg' )
         res.json(rows)
+    })
+})
+
+router.post('/getUserAvatar', function(req, res){
+    let data = JSON.parse(Object.keys(req.body)[0])
+    connection.query(Sql.getUserById, [data.username], (err, rows, fields)=>{
+        if(err) throw err
+        fs.readFile(__dirname + '/uploads/' + data.username + '.jpg', (err,sres)=>{
+            if(err) {
+                fs.readFile(__dirname + '/uploads/default.jpg', (err, rres)=>{
+                    res.send(new Buffer(rres).toString('base64'))
+                })
+            }else{
+            res.send(new Buffer(sres).toString('base64'))
+            console.log(sres)
+            }
+        })
+
+        
+    })
+
+})
+
+router.post('/uploadAvatar', upload.single('imageFile'), function(req, res){
+    let name = req.body.username
+    fs.rename(req.file.path, 'uploads/' + name + '.jpg', function(err){
+        if(err) throw err
+
+        connection.query(Sql.updateSql, [`uploads/${name}.jpg`, name], (err, rows, fields)=>{
+            if(err) throw err
+
+            res.sendFile( __dirname + '/uploads/' + name + '.jpg' )
+            res.json(rows)
+            
+            console.log('修改成功！')
+        })
     })
 })
 

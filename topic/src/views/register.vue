@@ -41,10 +41,11 @@ export default {
             let data = {
                 account: this.account,
                 password: this.passwd,
-                repassword: this.repasswd
+                repassword: this.repasswd,
+                avatar:'uploads/default.jpg'
             }
             let res = await api.post('http://localhost:3000/api/register', data)
-            console.log(res)
+            
         }
     }
 }

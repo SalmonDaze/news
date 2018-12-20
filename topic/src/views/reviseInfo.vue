@@ -25,11 +25,13 @@
                             <div>
                                 <el-upload
                                 class="avatar-uploader"
-                                action="https://jsonplaceholder.typicode.com/posts/"
+                                name='imageFile'
+                                :data='postData'
+                                action="http://localhost:3000/api/uploadAvatar"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                <img v-if="imageUrl || imageData" :src="imageData" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                 </el-upload>
                             </div>
@@ -43,6 +45,7 @@
 import vaildForm from '../components/vaildForm.vue'
 import { api } from '../api.js'
 import { mapState } from 'vuex'
+import b64toBlob from 'b64-to-blob'
 export default {
     name: 'reviseInfo',
     components:{
@@ -56,6 +59,11 @@ export default {
             createAt:'',
             avatar: '',
             admin: '',
+            imageUrl:'',
+            imageData:'',
+            postData:{
+                username: ''
+            },
         }
     },
     methods:{
@@ -67,13 +75,29 @@ export default {
             this.avatar = res[0].avatar
             this.sex = res[0].sex
             this.admin = res[0].admin
+            this.postData.username = res[0].name
+        },
+        async getAvatar(){
+            
+            let res = await api.post('http://localhost:3000/api/getUserAvatar', {username: this.username})
+            
+            this.imageData = `data:image/jpeg;base64,${res}`
+        }
+        ,
+        handleAvatarSuccess(res, file){
+            console.log(file)
+            this.imageUrl = URL.createObjectURL(file.raw)
+            this.imageData = this.imageUrl
+            console.log(this.imageUrl)
         }
     },
     created(){
         this.getInfo()
+        this.getAvatar()
     },
     computed:mapState({
-        username: state => state.username
+        username: state => state.username,
+        avatar: state => state.avatar
     })
 }
 </script>
@@ -113,7 +137,8 @@ export default {
     border-color: #409EFF;
   }
   .avatar {
-    border: 1px dashed #272727;
+    margin-top:20px;
+    border: 1px dashed #07ff13;
     width: 178px;
     height: 178px;
     display: block;

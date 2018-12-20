@@ -51,15 +51,23 @@ export default {
             console.log(res)
             if( res.msg.code === 200 ){
                 let token = res.msg.data.token
+                let qres = await api.post('http://localhost:3000/api/getUserAvatar', {username: this.account})
+                console.log(qres)
+                let avatar = `data:image/jpeg;base64,${qres}`
+
                 this.$store.commit('login',{
                     token: token,
-                    username: this.account
+                    username: this.account,
+                    avatar: avatar
                 })
                 this.$message({
                     showClose: true,
                     message: '登陆成功！',
                     type: 'success'
                 })
+            
+                
+
                 this.$router.push({path: '/'})
             }else{
                 this.$message({
@@ -68,7 +76,8 @@ export default {
                     type: 'error',
                 })
             }
-        }
+        },
+        
     }
 }
 </script>

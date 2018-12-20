@@ -10,6 +10,7 @@ if(sessionStorage.getItem('username')){
   store.commit('login',{
     username:sessionStorage.getItem('username'),
     token:sessionStorage.getItem('token'),
+    avatar: sessionStorage.getItem('avatar')
   })
 }
 
