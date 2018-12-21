@@ -45,7 +45,20 @@ export default {
                 avatar:'uploads/default.jpg'
             }
             let res = await api.post('http://localhost:3000/api/register', data)
-            
+            if(res.code === 1){
+                this.$message({
+                    type:'error',
+                    showClose: true,
+                    message: res.message
+                })
+            }else{
+                this.$message({
+                    type:'success',
+                    showClose: true,
+                    message: res.message
+                })
+                this.$router.push('/login')
+            }
         }
     }
 }

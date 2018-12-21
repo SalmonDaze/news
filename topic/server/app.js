@@ -32,6 +32,7 @@ let Sql = {
     getUserById : 'SELECT * From user WHERE name = ?',
     queryAll: 'SELECT * FROM user',
     updateSql: 'UPDATE user SET avatar = ? WHERE name = ?',
+    updataInfoSql: 'UPDATE user SET sex = ? WHERE name = ?'
 }
 
 let resmsg = function(code, data, message = '返回成功'){
@@ -87,11 +88,13 @@ router.post('/register', function(req, res){
                 if(!flag){
                     connection.query(Sql.addSql,addParams, (err, rows, fields)=>{
                         if(err) throw err
-                        res.json(resmsg(200, null))
+                        res.json(resmsg(200, null, '注册成功！'))
                     })
                 }
             })
             
+        }else{
+            res.json(resmsg(1, null, '两次密码不一致！'))
         }
         
     }else{
@@ -167,6 +170,15 @@ router.post('/uploadAvatar', upload.single('imageFile'), function(req, res){
             
             console.log('修改成功！')
         })
+    })
+})
+
+router.post('/updateInfo', function(req, res){
+    let data = JSON.parse(Object.keys(req.body)[0])
+    connection.query(Sql.updataInfoSql, [data.sex, data.username], (err, rows)=>{
+        if(err) throw err
+        res.json(resmsg(200, {}, '修改成功！'))
+
     })
 })
 

@@ -29,8 +29,7 @@
                                 :data='postData'
                                 action="http://localhost:3000/api/uploadAvatar"
                                 :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
+                                :on-success="handleAvatarSuccess">
                                 <img v-if="imageUrl || imageData" :src="imageData" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                 </el-upload>
@@ -38,7 +37,12 @@
                     </div>
                 </div>
             </template>
-            <template slot='footer'><router-link :to="{path:'/'}">返回首页</router-link></template>
+            <template slot='footer'>
+                <el-button @click='updateInfo'>保存信息</el-button> 
+                <br />
+                <router-link :to="{path:'/'}">返回首页</router-link>
+                   
+            </template>
         </vaild-form>
     </div>
 </template>
@@ -54,12 +58,12 @@ export default {
     },
     data(){
         return{
-            sex:'',
-            name:'',
-            UID:'',
-            createAt:'',
+            sex:'male',
+            name:'loading',
+            UID:'loading',
+            createAt:'loading',
             avatar: '',
-            admin: '',
+            admin: 'loading',
             imageUrl:'',
             imageData:'',
             postData:{
@@ -93,6 +97,10 @@ export default {
             sessionStorage.removeItem('avatar')
             sessionStorage.setItem('avatar', this.imageUrl)
             console.log(this.imageUrl)
+        },
+        async updateInfo(){
+            let res = await api.post('http://localhost:3000/api/updateInfo', {sex:this.sex, username: this.username})
+            console.log(res)
         }
     },
     created(){
