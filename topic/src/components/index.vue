@@ -17,17 +17,17 @@ export default {
 .hello{
   margin-right:0px;
   margin-top:350px;
-  margin-left:-130px;
+  margin-left:-80px;
   .login_content{
     width: 500px;
     margin:0 auto;
   }
   .rg_btn:nth-child(1){
-    margin-left:100px;
+    margin-left:40px;
   }
   .rg_btn{
-    width:150px;
-    height:60px;
+    width:120px;
+    height:40px;
   }
 }
 </style>

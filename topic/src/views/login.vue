@@ -6,7 +6,7 @@
                     <span>用户名 : </span><el-input v-model="account" placeholder="请输入账号"></el-input>
                 </div>
                 <div class='form_passwd'>
-                    <span>密 码 : </span><el-input type='password' v-model="password" placeholder="请输入密码"></el-input>
+                    <span>密 码 : </span><el-input type='password' v-model="password" placeholder="请输入密码" style='margin-left:23px;'></el-input>
                 </div>
                 <el-button type="primary" class='login_btn' @click='login'>登陆</el-button>
             </template>

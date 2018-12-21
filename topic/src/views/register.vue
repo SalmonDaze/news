@@ -60,6 +60,14 @@ export default {
                 this.$router.push('/login')
             }
         }
+    },
+    directives:{
+        focus:{
+            inserted: function(el){
+                el.focus()
+                
+            }
+        }
     }
 }
 </script>
