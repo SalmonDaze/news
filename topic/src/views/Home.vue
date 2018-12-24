@@ -24,14 +24,12 @@
       </el-col>
       <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
-    
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import index from '@/components/index.vue'
-import { mapState, mapMutations} from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'home',
@@ -58,7 +56,6 @@ export default {
   background-repeat:no-repeat;
   background-size:100% 100%;
   -moz-background-size:100% 100%;
-  
   .el-row{
     margin-left:0px;
     margin-right:0px;

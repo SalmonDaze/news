@@ -72,7 +72,7 @@ router.use(function(req, res, next) {
 
 router.post('/register', function(req, res){
     let data = JSON.parse(Object.keys(req.body)[0])
-    if(/^[a-zA-Z0-9]{4,16}/.test(data.account)){
+    if(/^[a-zA-Z0-9]{4,16}$/.test(data.account)){
         if( data.password === data.repassword ){
             let addParams = [data.account, formatTime(), 'male', data.avatar, 0, data.password]
             connection.query('select name from user', (err, rows, fields)=>{

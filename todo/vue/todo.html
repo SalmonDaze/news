@@ -37,19 +37,19 @@
             <input type="radio" name='switch' id='com' value='已完成事项'  @click="switchq='com'"><label for='com'>已完成事项</label>
             <input type="radio" name='switch' id='w' value='未完成事项'  @click="switchq='w'"><label for='w'>未完成事项</label>
             <ul id='todo_list' v-if="switchq == 'all'">
-                <li v-for='todo, index) in todoList' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
+                <li v-for='(todo, index) in todoList' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
                     {{todo.plan}}
-                    <button @click.stop='removeItem(todo)'>X</button>
+                    <button @click.stop='removeItem(index)'>X</button>
                 </li>
             </ul>
             <ul id='todo_list' v-else-if="switchq == 'com'">
-                <li v-for='todo in completeArray' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
+                <li v-for='(todo  ,index)in completeArray' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
                     {{todo.plan}}
                     <button @click.stop='removeItem(todo)'>X</button>
                 </li>
             </ul>
             <ul id='todo_list' v-else>
-                <li v-for='todo in NotfinishArray' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
+                <li v-for='(todo, index) in NotfinishArray' :style="{background: todo.complete ? 'skyblue' : '#d4d4d4'}" @click='switchState(todo)'>
                     {{todo.plan}}
                     <button @click.stop='removeItem(todo)'>X</button>
                 </li>
@@ -79,11 +79,11 @@
                     this.plan = ''
                     this.count++
                 },
-                switchState(index){
-                    this.todoList[this.todoList.indexOf(index)].complete = !this.todoList[this.todoList.indexOf(index)].complete
+                switchState(todo){
+                    todo.complete = !todo.complete
                 },
                 removeItem(index){
-                    this.todoList.splice(this.todoList.indexOf(index), 1)
+                    this.todoList.splice(index, 1)
                 }
             },
             computed:{
