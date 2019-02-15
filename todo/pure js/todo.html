@@ -75,6 +75,9 @@
             <input type="radio" name='switch' id='all' value='所有事项' checked='checked'><label for='all'>所有事项</label>
             <input type="radio" name='switch' id='com' value='已完成事项' ><label for='com'>已完成事项</label>
             <input type="radio" name='switch' id='w' value='未完成事项' ><label for='w'>未完成事项</label>
+            <div>
+                <p>当前共有<span id='count'>0</span>件事件, <span id='fini'></span>件已完成, <span id='unfini'></span>件未完成</p>
+            </div>
             <ul id='todo_list'>
             </ul>
         </div>
@@ -88,6 +91,9 @@
                 this.all = document.getElementById(all)
                 this.com = document.getElementById(com)
                 this.w = document.getElementById(w)
+                this.allCount = document.getElementById('count')
+                this.fini = document.getElementById('fini')
+                this.unfini = document.getElementById('unfini')
                 this.state = 'all'
                 this.count = 0
                 this.init()
@@ -167,6 +173,7 @@
                 this.li = liArray
 
                 this.count++
+                this.updateInfo()
             }
 
             render(state){
@@ -204,21 +211,28 @@
                 let liArray = Array.from(this.li)
                 this.el.removeChild(child)
                 for(let i=0 ; i < liArray.length ; i++){
-                    console.log(liArray[i])
                     if( liArray[i].index === child.index ){
                         liArray.splice(i, 1)
-                        console.log(liArray)
                     }
                 }
                 this.li = liArray
+                this.updateInfo()
             }
 
             switchState(){
                 for(let i=0 ; i<this.li.length ; i++){
-                    console.log(this.li[i].querySelectorAll('.status'))
                     this.li[i].querySelectorAll('.status')[0].style.backgroundColor = this.li[i].complete ? '#409EFF' : '#c0c0c0'
                 }
+                this.li = Array.from(this.li)
+                this.updateInfo()
             }
+
+            updateInfo(){
+                console.log(this)
+                this.allCount.innerHTML = this.li.length
+                this.fini.innerHTML = this.li.filter( x => x.complete).length
+                this.unfini.innerHTML = this.li.filter( x => !x.complete).length
+            } 
         }
 
         let todo = new Todo('todo_list', 'all', 'com', 'w')
