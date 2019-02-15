@@ -7,28 +7,67 @@
     <title>Document</title>
     <style>
         .container{
-            width:50%;
+            width:62%;
             height:1000px;
             margin:0 auto;
         }
         .todo_input{
-            width:500px;
-            height: 25px;
+            width:800px;
+            height: 30px;
+            padding: 2px 0 2px 8px;
+            outline: none;
+            font-size: 0.9rem;
         }
         body{
-            background:#d4d4d4;
+            background:#eeeeee;
         }
         .container2{
             margin-top:20px;
         }
         ul{
             list-style-type: none;
+            width: 100%;
+            padding: 0;
+        }
+        ul li{
+            width: 102%;
+            height: 35px;
+            padding-top: 8px;
+            padding-left: 8px;
+            border: 1px solid #eeeeee;
+        }
+        ul li:hover{
+            border: 1px solid #409EFF;
+        }
+        ul li:hover .btn{
+            display: block;
+        }
+        .btn{
+            color: red;
+            outline: none;
+            border: 0px;
+            background: #eeeeee;
+            font-size: 1.1rem;
+            cursor: pointer;
+            float: right;
+            margin-right: 20px;
+            display: none;
+        }
+        .status{
+            width: 10px;
+            height: 10px;
+            background-color: #c0c0c0;
+            float: left;
+            margin-top: 7px;
+            margin-right: 10px;
+            margin-left: 15px;
         }
     </style>
     
 </head>
 <body>
     <div class='container'>
+        <div>****todoItem***</div>
         <h3>事项列表</h3>
         <h4>添加事项</h4>
         <input type="text" placeholder="输入事项后，按回车确认" class='todo_input' id='todo_add' />
@@ -92,12 +131,16 @@
                 let btn = document.createElement('BUTTON')
                 let x = document.createTextNode('X')
                 let mydiv = document.createElement('div')
+                let statusBox = document.createElement('div')
                 btn.appendChild(x)
+                btn.className = 'btn'
+                statusBox.className = 'status'
                 newtodo.complete = false
                 newtodo.index = this.count
                 btn.index = this.count
                 mydiv.appendChild(text)
                 mydiv.appendChild(btn)
+                mydiv.appendChild(statusBox)
                 newtodo.appendChild(mydiv)
                 this.el.appendChild(newtodo)
                 this.input.value = ''
@@ -113,8 +156,8 @@
                     _this.removeItem(child)
                 })
                 
-                newtodo.addEventListener('click', function(){
-                    this.complete = !this.complete
+                statusBox.addEventListener('click', function(){
+                    newtodo.complete = !newtodo.complete
                     _this.switchState()
                 })
 
@@ -172,7 +215,8 @@
 
             switchState(){
                 for(let i=0 ; i<this.li.length ; i++){
-                    this.li[i].style.backgroundColor = this.li[i].complete ? 'skyblue' : '#d4d4d4'
+                    console.log(this.li[i].querySelectorAll('.status'))
+                    this.li[i].querySelectorAll('.status')[0].style.backgroundColor = this.li[i].complete ? '#409EFF' : '#c0c0c0'
                 }
             }
         }
